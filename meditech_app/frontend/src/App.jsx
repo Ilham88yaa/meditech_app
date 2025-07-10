@@ -1,13 +1,11 @@
+
 import React from 'react';
-import PasienList from './pages/pasien_list';
+import Dashboard from './pages/dashboard';
+
 
 function App() {
-  return (
-    <div>
-      <h1>Data Pasien</h1>
-      <PasienList />
-    </div>
-  );
+  return <Dashboard />;
 }
+
 
 export default App;
