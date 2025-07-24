@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 const pasienSchema = new mongoose.Schema({
     nama: { type: String, required: true },
     nik: { type: String, required: true, unique: true },

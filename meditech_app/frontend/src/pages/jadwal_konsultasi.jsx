@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getAllJadwal } from '../services/jadwal_service';
 import { Typography, Paper, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 
-const jadwalDummy = [
-  { nama: 'Budi', dokter: 'dr. Siti', tanggal: '2025-07-12', jam: '09:00' },
-  { nama: 'Ani', dokter: 'dr. Andi', tanggal: '2025-07-13', jam: '10:00' },
-];
-
 export default function JadwalKonsultasi() {
+  const [jadwal, setJadwal] = useState([]);
+
+  useEffect(() => {
+    getAllJadwal().then(data => setJadwal(data));
+  }, []);
+
   return (
     <Paper sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom>Jadwal Konsultasi</Typography>
@@ -21,11 +23,11 @@ export default function JadwalKonsultasi() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {jadwalDummy.map((row, idx) => (
+            {jadwal.map((row, idx) => (
               <TableRow key={idx}>
                 <TableCell>{row.nama}</TableCell>
                 <TableCell>{row.dokter}</TableCell>
-                <TableCell>{row.tanggal}</TableCell>
+                <TableCell>{new Date(row.tanggal).toLocaleDateString()}</TableCell>
                 <TableCell>{row.jam}</TableCell>
               </TableRow>
             ))}
@@ -35,3 +37,4 @@ export default function JadwalKonsultasi() {
     </Paper>
   );
 }
+// This component fetches and displays the consultation schedule in a table format.
