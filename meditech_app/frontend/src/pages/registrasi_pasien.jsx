@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { Typography, Paper, Box, TextField, Button } from '@mui/material';
+import React, { useState, useRef } from 'react';
+import {
+  Box, Paper, TextField, Button, Typography
+} from '@mui/material';
 import axios from 'axios';
 
 export default function RegistrasiPasien() {
@@ -10,6 +12,8 @@ export default function RegistrasiPasien() {
     alamat: '',
     no_hp: ''
   });
+
+  const namaRef = useRef();
 
   const handleChange = (e) => {
     setFormData({
@@ -24,6 +28,19 @@ export default function RegistrasiPasien() {
       const res = await axios.post('http://localhost:5000/api/pasien', formData);
       console.log('Pasien berhasil didaftarkan:', res.data);
       alert('Pasien berhasil didaftarkan');
+
+      // Kosongkan form
+      setFormData({
+        nama: '',
+        nik: '',
+        tanggal_lahir: '',
+        alamat: '',
+        no_hp: ''
+      });
+
+      // Autofokus ke nama
+      namaRef.current?.focus();
+
     } catch (err) {
       console.error(err);
       alert('Gagal mendaftar pasien');
@@ -69,10 +86,7 @@ export default function RegistrasiPasien() {
           </Typography>
           <Typography
             variant="body1"
-            sx={{
-              color: 'text.secondary',
-              fontSize: '1.1rem'
-            }}
+            sx={{ color: 'text.secondary', fontSize: '1.1rem' }}
           >
             Silakan lengkapi data pribadi Anda
           </Typography>
@@ -83,24 +97,11 @@ export default function RegistrasiPasien() {
             fullWidth
             label="Nama Lengkap"
             name="nama"
+            inputRef={namaRef}
             value={formData.nama}
             onChange={handleChange}
             required
-            sx={{
-              mb: 3,
-              '& .MuiOutlinedInput-root': {
-                borderRadius: 2,
-                '&:hover fieldset': {
-                  borderColor: '#667eea'
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: '#667eea'
-                }
-              },
-              '& .MuiInputLabel-root.Mui-focused': {
-                color: '#667eea'
-              }
-            }}
+            sx={textFieldStyle}
           />
 
           <TextField
@@ -110,21 +111,7 @@ export default function RegistrasiPasien() {
             value={formData.nik}
             onChange={handleChange}
             required
-            sx={{
-              mb: 3,
-              '& .MuiOutlinedInput-root': {
-                borderRadius: 2,
-                '&:hover fieldset': {
-                  borderColor: '#667eea'
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: '#667eea'
-                }
-              },
-              '& .MuiInputLabel-root.Mui-focused': {
-                color: '#667eea'
-              }
-            }}
+            sx={textFieldStyle}
           />
 
           <TextField
@@ -135,24 +122,8 @@ export default function RegistrasiPasien() {
             value={formData.tanggal_lahir}
             onChange={handleChange}
             required
-            InputLabelProps={{
-              shrink: true,
-            }}
-            sx={{
-              mb: 3,
-              '& .MuiOutlinedInput-root': {
-                borderRadius: 2,
-                '&:hover fieldset': {
-                  borderColor: '#667eea'
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: '#667eea'
-                }
-              },
-              '& .MuiInputLabel-root.Mui-focused': {
-                color: '#667eea'
-              }
-            }}
+            InputLabelProps={{ shrink: true }}
+            sx={textFieldStyle}
           />
 
           <TextField
@@ -164,21 +135,7 @@ export default function RegistrasiPasien() {
             required
             multiline
             rows={3}
-            sx={{
-              mb: 3,
-              '& .MuiOutlinedInput-root': {
-                borderRadius: 2,
-                '&:hover fieldset': {
-                  borderColor: '#667eea'
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: '#667eea'
-                }
-              },
-              '& .MuiInputLabel-root.Mui-focused': {
-                color: '#667eea'
-              }
-            }}
+            sx={textFieldStyle}
           />
 
           <TextField
@@ -188,21 +145,7 @@ export default function RegistrasiPasien() {
             value={formData.no_hp}
             onChange={handleChange}
             required
-            sx={{
-              mb: 4,
-              '& .MuiOutlinedInput-root': {
-                borderRadius: 2,
-                '&:hover fieldset': {
-                  borderColor: '#667eea'
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: '#667eea'
-                }
-              },
-              '& .MuiInputLabel-root.Mui-focused': {
-                color: '#667eea'
-              }
-            }}
+            sx={{ ...textFieldStyle, mb: 4 }}
           />
 
           <Button
@@ -232,3 +175,19 @@ export default function RegistrasiPasien() {
     </Box>
   );
 }
+
+const textFieldStyle = {
+  mb: 3,
+  '& .MuiOutlinedInput-root': {
+    borderRadius: 2,
+    '&:hover fieldset': {
+      borderColor: '#667eea'
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#667eea'
+    }
+  },
+  '& .MuiInputLabel-root.Mui-focused': {
+    color: '#667eea'
+  }
+};

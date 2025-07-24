@@ -1,40 +1,56 @@
 import React, { useEffect, useState } from 'react';
 import { getAllJadwal } from '../services/jadwal_service';
-import { Typography, Paper, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import {
+  Typography, Paper, Box, TextField
+} from '@mui/material';
+import DataTable from 'react-data-table-component';
 
 export default function JadwalKonsultasi() {
   const [jadwal, setJadwal] = useState([]);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     getAllJadwal().then(data => setJadwal(data));
   }, []);
 
+  const columns = [
+    { name: 'Nama Pasien', selector: row => row.nama, sortable: true },
+    { name: 'Dokter', selector: row => row.dokter, sortable: true },
+    { name: 'Tanggal', selector: row => new Date(row.tanggal).toLocaleDateString(), sortable: true },
+    { name: 'Jam', selector: row => row.jam }
+  ];
+
+  const filteredData = jadwal.filter(item =>
+    item.nama.toLowerCase().includes(search.toLowerCase()) ||
+    item.dokter.toLowerCase().includes(search.toLowerCase()) ||
+    item.tanggal.toLowerCase?.().includes(search.toLowerCase()) // if needed
+  );
+
   return (
-    <Paper sx={{ p: 3 }}>
+    <Box sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom>Jadwal Konsultasi</Typography>
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Nama Pasien</TableCell>
-              <TableCell>Dokter</TableCell>
-              <TableCell>Tanggal</TableCell>
-              <TableCell>Jam</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {jadwal.map((row, idx) => (
-              <TableRow key={idx}>
-                <TableCell>{row.nama}</TableCell>
-                <TableCell>{row.dokter}</TableCell>
-                <TableCell>{new Date(row.tanggal).toLocaleDateString()}</TableCell>
-                <TableCell>{row.jam}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Paper>
+
+      <TextField
+        label="Cari pasien / dokter..."
+        variant="outlined"
+        size="small"
+        fullWidth
+        sx={{ mb: 2 }}
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      <Paper elevation={3}>
+        <DataTable
+          columns={columns}
+          data={filteredData}
+          pagination
+          highlightOnHover
+          dense
+          responsive
+          noDataComponent="Tidak ada jadwal ditemukan."
+        />
+      </Paper>
+    </Box>
   );
 }
-// This component fetches and displays the consultation schedule in a table format.

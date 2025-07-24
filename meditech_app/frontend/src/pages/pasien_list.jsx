@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { getAllPasien, updatePasien, deletePasien } from '../services/pasien_service';
 import {
-  Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Box, Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle
+  Typography, Box, Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Paper
 } from '@mui/material';
+import DataTable from 'react-data-table-component';
 
 const PasienList = () => {
   const [pasien, setPasien] = useState([]);
   const [openEdit, setOpenEdit] = useState(false);
   const [selectedPasien, setSelectedPasien] = useState(null);
+  const [search, setSearch] = useState('');
 
   const fetchData = () => {
     getAllPasien().then(data => setPasien(data));
@@ -55,46 +56,58 @@ const PasienList = () => {
     }
   };
 
+  const columns = [
+    { name: 'Nama', selector: row => row.nama, sortable: true },
+    { name: 'NIK', selector: row => row.nik },
+    { name: 'Tanggal Lahir', selector: row => new Date(row.tanggal_lahir).toLocaleDateString() },
+    { name: 'Alamat', selector: row => row.alamat },
+    { name: 'No. HP', selector: row => row.no_hp },
+    {
+      name: 'Aksi',
+      cell: row => (
+        <>
+          <Button variant="outlined" size="small" onClick={() => handleEditClick(row)}>Edit</Button>{' '}
+          <Button variant="contained" color="error" size="small" onClick={() => handleDelete(row._id)}>Delete</Button>
+        </>
+      ),
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true
+    }
+  ];
+
+  const filteredPasien = pasien.filter(p =>
+    p.nama.toLowerCase().includes(search.toLowerCase()) ||
+    p.nik.toLowerCase().includes(search.toLowerCase()) ||
+    p.alamat.toLowerCase().includes(search.toLowerCase()) ||
+    p.no_hp.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom>Daftar Pasien</Typography>
 
-      <TableContainer component={Paper} elevation={3}>
-        <Table>
-          <TableHead sx={{ backgroundColor: '#1976d2' }}>
-            <TableRow>
-              <TableCell sx={{ color: '#fff' }}>Nama</TableCell>
-              <TableCell sx={{ color: '#fff' }}>NIK</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Tanggal Lahir</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Alamat</TableCell>
-              <TableCell sx={{ color: '#fff' }}>No. HP</TableCell>
-              <TableCell sx={{ color: '#fff' }}>Aksi</TableCell>
-            </TableRow>
-          </TableHead>
+      <TextField
+        label="Cari pasien..."
+        variant="outlined"
+        size="small"
+        fullWidth
+        sx={{ mb: 2 }}
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
 
-          <TableBody>
-            {pasien.length > 0 ? (
-              pasien.map((p) => (
-                <TableRow key={p._id}>
-                  <TableCell>{p.nama}</TableCell>
-                  <TableCell>{p.nik}</TableCell>
-                  <TableCell>{new Date(p.tanggal_lahir).toLocaleDateString()}</TableCell>
-                  <TableCell>{p.alamat}</TableCell>
-                  <TableCell>{p.no_hp}</TableCell>
-                  <TableCell>
-                    <Button variant="outlined" size="small" onClick={() => handleEditClick(p)}>Edit</Button>{' '}
-                    <Button variant="contained" color="error" size="small" onClick={() => handleDelete(p._id)}>Delete</Button>
-                  </TableCell>
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={6} align="center">Belum ada data pasien.</TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Paper elevation={3}>
+        <DataTable
+          columns={columns}
+          data={filteredPasien}
+          pagination
+          highlightOnHover
+          responsive
+          dense
+          noDataComponent="Tidak ada data pasien ditemukan."
+        />
+      </Paper>
 
       {/* Modal Edit */}
       <Dialog open={openEdit} onClose={() => setOpenEdit(false)}>
@@ -107,7 +120,7 @@ const PasienList = () => {
             name="tanggal_lahir"
             type="date"
             InputLabelProps={{ shrink: true }}
-            value={selectedPasien?.tanggal_lahir ? selectedPasien.tanggal_lahir.slice(0,10) : ''}
+            value={selectedPasien?.tanggal_lahir ? selectedPasien.tanggal_lahir.slice(0, 10) : ''}
             onChange={handleEditChange}
           />
           <TextField label="Alamat" name="alamat" value={selectedPasien?.alamat || ''} onChange={handleEditChange} />
