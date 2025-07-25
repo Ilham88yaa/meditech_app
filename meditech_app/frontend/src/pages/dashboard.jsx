@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Box, CssBaseline, Drawer, AppBar, Toolbar, Typography, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import PeopleIcon from '@mui/icons-material/People';
@@ -10,8 +9,7 @@ import RekamMedis from './rekam_medis';
 import PasienList from './pasien_list';
 import FormBooking from './form_booking';
 import FormRekamMedis from './form_rekam_medis';
-
-
+import logoMeditech from "../img/logomeditech.png";
 
 
 const drawerWidth = 220;
@@ -52,27 +50,28 @@ export default function Dashboard() {
   return (
     <div style={{ display: 'flex', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>
       {/* App Bar */}
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        height: '64px',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        zIndex: 1201,
-        display: 'flex',
-        alignItems: 'center',
-        paddingLeft: '24px',
-        boxShadow: '0 4px 20px rgba(102, 126, 234, 0.3)'
-      }}>
-        <h1 style={{
-          color: 'white',
-          fontSize: '1.25rem',
-          fontWeight: '600',
-          margin: 0
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '64px',
+          background: 'linear-gradient(135deg, #ffffff 0%, #e5e7eb 100%',
+          zIndex: 1201,
+          display: 'flex',
+          alignItems: 'center',
+          paddingLeft: '24px',
+          boxShadow: '0 4px 20px rgba(102, 126, 234, 0.3)'
         }}>
-          Klinik Meditech - Dashboard
-        </h1>
+
+        <img 
+          src={logoMeditech}
+          alt="Logo Meditech"
+          style={{
+            height: '40px',
+            marginRight: '16px'
+          }}
+        />
       </div>
 
       {/* Sidebar */}
