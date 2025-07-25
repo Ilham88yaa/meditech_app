@@ -67,25 +67,7 @@ export default function FormRekamMedis() {
         </Box>
       </Paper>
 
-      <Typography variant="h6" gutterBottom>Daftar Rekam Medis</Typography>
-      <TextField
-        label="Cari data..."
-        variant="outlined"
-        size="small"
-        fullWidth
-        sx={{ mb: 2 }}
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-      <DataTable
-        columns={columns}
-        data={filteredData}
-        pagination
-        highlightOnHover
-        responsive
-        dense
-        noDataComponent="Tidak ada data yang ditemukan."
-      />
+      {/* Tabel rekam medis telah dipindahkan ke menu Rekam Medis */}
     </Box>
   );
 }

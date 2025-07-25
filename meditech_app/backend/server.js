@@ -11,9 +11,11 @@ require('dotenv').config();
 const app = express();
 app.use(cors());
 app.use(express.json());
+const authRoutes = require('./routes/auth_routes');
 app.use('/api/pasien', pasienRoutes);
 app.use('/api/jadwal', jadwalRoutes);
 app.use('/api/rekam_medis', rekamRoutes);
+app.use('/api/auth', authRoutes);
 
 mongoose.connect(process.env.MONGO_URI, {})
   .then(() => console.log('✅ MongoDB Connected'))
