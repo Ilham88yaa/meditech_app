@@ -105,7 +105,7 @@ export default function Login({ onLogin }) {
     <Box style={styles.container}>
       <Paper style={styles.card}>
         <MedicalServicesIcon style={{ fontSize: 60, color: '#764ba2', marginBottom: 10 }} />
-        <Typography style={styles.title}>Login ke Meditech</Typography>
+        <Typography style={styles.title}>Login admin</Typography>
         <Box component="form" onSubmit={handleSubmit} style={styles.form}>
           <TextField label="Email" name="email" type="email" value={form.email || ''} onChange={handleChange} required fullWidth />
           <TextField label="Password" name="password" type="password" value={form.password || ''} onChange={handleChange} required fullWidth />

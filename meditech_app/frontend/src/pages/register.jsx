@@ -88,7 +88,7 @@ export default function Register({ onRegister }) {
     <Box style={styles.container}>
       <Paper style={styles.card}>
         <MedicalServicesIcon style={{ fontSize: 60, color: '#764ba2', marginBottom: 10 }} />
-        <Typography style={styles.title}>Registrasi Akun</Typography>
+        <Typography style={styles.title}>Registrasi Admin</Typography>
         <Box component="form" onSubmit={handleSubmit} style={styles.form}>
           <TextField label="Username" name="username" value={form.username} onChange={handleChange} required fullWidth />
           <TextField label="Email" name="email" type="email" value={form.email} onChange={handleChange} required fullWidth />

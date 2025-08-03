@@ -10,9 +10,7 @@ import RekamMedis from './rekam_medis';
 import PasienList from './pasien_list';
 import FormBooking from './form_booking';
 import FormRekamMedis from './form_rekam_medis';
-
-
-
+import logoMeditech from "../img/logomeditech.png";
 
 const drawerWidth = 220;
 
@@ -140,20 +138,74 @@ export default function Dashboard() {
   return (
     <div style={styles.container}>
       {/* App Bar */}
-      <div style={styles.appBar}>
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: '64px',
+        background: 'linear-gradient(135deg, #ffffff 0%, #e5e7eb 100%)',
+        zIndex: 1201,
+        display: 'flex',
+        alignItems: 'center',
+        paddingLeft: isMobile ? 8 : 24,
+        boxShadow: '0 4px 20px rgba(102, 126, 234, 0.3)'
+      }}>
+        {/* Only show menu button on mobile */}
         {isMobile && (
-          <button style={{ ...styles.menuButton, display: 'block' }} onClick={() => setSidebarOpen(true)}>
-            &#9776;
+          <button
+            style={{
+              background: 'none',
+              border: 'none',
+              color: '#764ba2',
+              fontSize: '2.1rem',
+              cursor: 'pointer',
+              marginRight: 12,
+              outline: 'none',
+              boxShadow: 'none',
+              padding: 0,
+            }}
+            aria-label="Buka menu"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <span style={{ fontSize: '2.1rem', fontWeight: 700 }}>&#9776;</span>
           </button>
         )}
         <h1 style={{
-          color: 'white',
+          color: '#764ba2',
           fontSize: isMobile ? '1rem' : '1.25rem',
           fontWeight: '600',
-          margin: 0
+          margin: 0,
+          flexGrow: 1,
+          marginLeft: isMobile ? 0 : 8,
         }}>
           Klinik Meditech - Dashboard
         </h1>
+        <button
+          style={{
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            padding: isMobile ? '7px 16px' : '10px 24px',
+            marginRight: isMobile ? 8 : 24,
+            cursor: 'pointer',
+            fontWeight: '600',
+            fontSize: isMobile ? '0.95rem' : '1.08rem',
+            boxShadow: '0 2px 8px rgba(102,126,234,0.15)',
+            letterSpacing: '0.5px',
+            transition: 'background 0.3s',
+            outline: 'none'
+          }}
+          onClick={() => {
+            localStorage.removeItem('token');
+            window.location.href = '/login';
+          }}
+          onMouseOver={e => e.target.style.background = 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)'}
+          onMouseOut={e => e.target.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}
+        >
+          Logout
+        </button>
       </div>
 
       {/* Sidebar for desktop */}
